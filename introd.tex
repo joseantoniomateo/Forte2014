@@ -1,0 +1,397 @@
+\section{Introduction}
+
+The development of software systems is becoming more complex with the 
+appearance
+of new computational paradigms such as Service-Oriented  Computing  (SOC), 
+Grid Computing and Cloud Computing.
+In these systems, the service provider needs to ensure some levels of 
+quality and privacy to the clients in a way that had never been considered. It is therefore necessary to develop new techniques to benefit from the advantages 
+of recent approaches, such as Web service compositions. Formal models of concurrency have been widely used for the description and analysis of concurrent and distributed systems. 
+Grid/Cloud environments are characterized by a dynamic environment due to the heterogeneity and volatility of resources. There are two complementary views to composite Web services: Choreography and Orchestration. The choreography view describes the observable interactions among services and can
+be  defined  by  using  specific  languages such as Web  Services
+Choreography  Description  Language  (WS-CDL) %\cite{WSCDL}
+or  by
+using more general languages like UML Messages Sequence
+Charts (MSC). On the other hand, orchestration concerns
+the internal behaviour of a Web service in terms of invocations
+to  other  services.  Web Services Business Process Execution Language (WS-BPEL) \cite{BPEL4WS} is normally used 
+to describe Web service orchestrations, so this
+is considered the de-facto standard language for describing Web services
+workflows in terms of Web service compositions.
+
+To facilitate additional interoperability among services, more standardization is required to deal with distributed resources. In January of 2004, several members of the \emph{Globus Alliance} organization and the computer multinational \emph{IBM} with the help of experts from companies such as \emph{HP, SAP, Akamai, etc.} defined the basis architecture and the initial specification documents of a new standard for that purpose, Web Services Resource Framework (WSRF)~\cite{Banks2006,Czajkowski2004,Foster2004}. Although the Web service 
+definition does not consider the notion of state, interfaces frequently provide the user with the ability to access and manipulate
+states, that is, data values that persist across, and evolve as a result of Web service interactions. The messages that the services 
+send and receive imply (or encourage programmers to infer) the existence of an associated stateful resource. It is then desirable 
+to define Web service conventions to enable the discovery of, introspection on, and interaction with stateful resources in standard 
+and interoperable ways. In addition, the WS-Notification (WSN) family of specifications defines the Web Services standard approach to send and receive
+notifications. Thus, WSN can be used in conjunction with WSRF to model a publish/subscribe architecture, thus allowing clients to subscribe to distributed WS-Resources and being notified in the case that this subscription condition holds or the state of that resource changes.
+
+The main motivation of this work is to provide a formal 
+semantics for WS-BPEL+WSRF/WSN to manage stateful Web services workflows 
+by using the existing machinery in distributed systems,
+and specifically a well-known formalism, such as coloured
+Petri nets extended with time and priorities, which are a graphical model, but they also
+provide us with the ability to simulate and analyse the modelled
+system.
+
+Thus, our aim is not to provide just another WS-BPEL semantics. 
+In order to deal with the integration of WS-BPEL plus WSRF/WSN in a proper way, 
+we have realised that it is more convenient 
+to introduce a specific semantic model, which  covers 
+properly all the relevant aspects of WSRF such as notifications and 
+resource time-outs. 
+The integration of WS-BPEL and WSRF/WSN is not new; in the literature, 
+there are a bundle of works defining this integration, although 
+none of these works define a formal semantics in terms of Petri
+nets. In the next section we present an overview
+of these works. 
+However, we have considered that the integration of WSRF/WSN, and specifically the
+time constraints that are inherent in this service language, would be captured
+in a better way in a specific language, in which the main activity constructions
+of WS-BPEL are considered, as well as a model for event and fault handling. 
+%Nevertheless, to the best of our 
+%knowledge, this is the first paper that uses coloured Petri nets to 
+%model both approaches allowing designers to validate and 
+%verify their models before starting the implementation with the 
+%corresponding benefits. We have also defined the necessary Petri 
+%nets to model and verify WSRF Publish/Subscribe system to 
+%standardise the way of managing subscriptions in Cloud systems. 
+%These observations motivated the advent of the WS-Resource approach to modeling states in Web services.
+%A WS-Resource is defined as the composition of a Web service and a stateful resource that is (i) expressed as an association of a XML document with 
+%defined type with a portType, and (ii) addressed and accessed according to the implied resource pattern, a conventional use
+%of WS-Addressing endpoint references (EPR). In the implied resource pattern, a stateful resource identifier is encapsulated in an 
+%endpoint reference and used to identify the stateful resource to be used in the execution of a Web service message 
+%exchange. 
+%An Endpoint Reference shall consist of: Uniform Resource Identifier (URI), parameters of the message being sent to request the sending of the Endpoint Reference and data on the interface used. In this exchange, the resource identifier is encapsulated in an Endpoint Reference used to identify the resource in any exchange of messages between services which belongs to the choreography. 
+
+%We then define an integrated language, which is based on BPEL, but including many aspects of WSRF. There are many different works that formalize the main constructions of WS-BPEL. In the related section work we show a brief description of some of these works.
+%However, we have considered that the integration of WSRF, and specifically the
+%time constraints that are inherent in this service language, would be captured
+%in a better way in a specific language, in which the main activity constructions
+%of WS-BPEL are considered, as well as a model for event and fault handling. 
+%We can see a WS-Resource as a collection of properties \emph{P} identified by an address \emph{EPR} with an associated \emph{timeout}. This timeout represents the WS-Resource lifetime. Without loss of generality, we have reduced the resource properties set to only one allowing us to use the resource identifier \emph{EPR} as the representative of this property. As well, in BPEL, we have taken into consideration the root scope only, avoiding thus any class of nesting among scopes, and we have considered the event and fault handling, leaving the other handling types as future work. The rest of the paper is organized as follows. In Section \ref{relwork}, we present the basic concepts to understand this paper and some related works. Finally, Section \ref{conclu} finishes the paper giving some conclusions and possible future works.   
+
+
+\section{Background and Related Work}\label{relwork}
+
+In this Section, we provide an overview of  WS-BPEL and WSRF/WSN,
+and we also review some related works.
+
+\subsection{Overview of WS-BPEL/WSRF/WSN}\label{BPEL/WSRF}
+
+WS-BPEL \cite{BPEL4WS}, for short BPEL, 
+is an OASIS orchestration language for specifying actions within 
+Web services business processes. WS-BPEL is therefore an orchestration
+language in the sense that it is used to define the composition
+of services from a local viewpoint, describing the individual
+behaviour of each participant. More specifically, WS-BPEL is a language for describing the behaviour of a business process based on interactions between the process and its partners. At the core of the WS-BPEL process model is the notion of peer-to-peer interaction between services described in Web Services Description Language (WSDL), both the process and its partners are exposed as WSDL services. Thus, a business process defines how to coordinate the interactions between a process instance and its partners through Web Service interfaces, whereas the structure of the relationship at the interface level is encapsulated in what is called a \emph{partnerLink}. These are instances of typed connectors which specify the WSDL port 
+types the process offers to and 
+requires from a partner at the other end of the partner link. A port type  defines the connection point to a web service defining a named set of abstract operations and the abstract messages involved. 
+
+In particular, 
+we will consider a composite Web service consisting of a set of 
+orchestrators, described by BPEL+WSRFN syntax, which
+exchange messages through some communication channels ({\em partnerLinks}). Moreover, WS-BPEL processes use {\em variables} to temporarily store 
+data. Variables are therefore declared on a process or on a scope 
+within that process. In our case, there will be a single scope
+({\em root}), so no nesting is considered in our framework.
+Besides, for simplicity again, we will only consider integer
+variables.
+
+An orchestrator consists of a main activity, representing
+the normal behaviour of this participant. There are also
+event and fault activities, which are executed upon the
+occurrence of some events, or due to some execution failures,
+respectively. WS-BPEL activities 
+can be \emph{basic} or \emph{structured}. 
+\emph{Basic activities} are those which describe the elemental 
+steps of the process behaviour, such as the assignment of
+variables ({\em assign}), empty action ({\em empty}), 
+time delay ({\em wait}), invoke a service ({\em invoke}) and receive
+a message ({\em receive}), reply to a client ({\em reply}),
+and throw an exception ({\em throw}). We also have an action to {\em terminate}
+the process execution at any moment ({\em exit}).
+For technical reasons we have also included an additional activity {\em $\overline{reply}$}, which is used when a service invocation
+expects a reply, in order to implement the synchronization with
+the {\em reply} action from the server.  
+
+\emph{Structured activities} encode control-flow logic in a nested
+way. The considered structured activities are the following:
+a {\em sequence} of activities, separated by a semicolon, 
+the parallel composition, represented by two parallel bars ($\|$),
+the conditional repetitive behaviour ({\em while}),
+and a timed extension of the receive activity, which allows to
+receive different types of messages with a time-out associated
+({\em pick}).
+
+WSRF~\cite{Banks2006} is a specification language 
+developed by OASIS and some of the most pioneering computer companies, 
+whose purpose is to define a generic framework for modelling Web services 
+with stateful resources, which has been proposed to 
+fully fit the OpenGrid Services
+Infrastructure (OGSI) into the Web services stack, thus allowing Web service middleware to
+be the base for Grid environments. The two main concepts behind the resource framework are 
+WS-Resources and the implied resource pattern \cite{Leymann:2006}.
+
+
+On the one hand, we can see a WS-Resource as a collection of properties \emph{P} identified by an address \emph{EPR} with an associated \emph{timeout}. This timeout represents the WS-Resource lifetime. Without loss of generality, we have reduced the resource properties set to only one allowing us to use the resource identifier \emph{EPR} as the representative of this property. On the other hand, the implied resource pattern specifies how to identify this resource.
+It is based on the WS-Addressing~\cite{wsaddressing} specification and describes how a data
+structure (EPR) is used for the identification of a WS-Resource.
+Next, we describe the WSRF elements
+that are considered in the BPEL+WSRFN framework:
+
+\vspace*{-0.15cm}
+
+%{\renewcommand{\arraystretch}{0.85}
+%\begin{table}[!h]
+%\begin{center}
+%\begin{tabular}{|p{3.5cm}|p{8.5cm}|}
+%\hline
+%\cellcolor[gray]{.9}~ & \cellcolor[gray]{.9}~ \\
+%\rowcolor[gray]{.9}
+%\multicolumn{1}{>{\rowcolor[gray]{.9}}c|}{WS-CDL Syntax} & Metamodel\\
+%\cellcolor[gray]{.9}\hspace*{1.5cm}Name & \cellcolor[gray]{.9}\hspace*{3.5cm}Describes\\
+%\cellcolor[gray]{.9}~ & \cellcolor[gray]{.9}~ \\
+
+%\begin{center}
+%\vspace{-0.1cm}
+%{\bf WS-ResourceProperties} 
+%\end{center}
+%& 
+%\begin{flushleft}
+%\vspace{-0.1cm}
+%\hspace{0.3cm} WSRF uses a precise specification to define the properties of the WS-Resources.\\
+%\end{flushleft}\\
+%\hline
+
+%\begin{center}
+%\vspace{-0.1cm}
+%{\bf WS-Basefaults} 
+%\end{center}
+%& 
+%\begin{flushleft}
+%\vspace{-0.1cm}
+%\hspace{0.1cm} To standardize the format for reporting error messages.
+%\\[-0.2cm]
+%\end{flushleft}\\
+%\hline
+
+%\begin{center}
+%\vspace{-0.1cm}
+%{\bf WS-ServiceGroup} 
+%\end{center}
+%& 
+%\begin{flushleft}
+%\vspace{-0.25cm}
+%\hspace{0.3cm} This specification allows the programmer to create groups that share a common set of properties.
+%\end{flushleft}\\[-0.2cm]
+%\hline
+
+%\begin{center}
+%\vspace{-0.2cm}
+%{\bf WS-ResourceLifetime}
+%\end{center}
+%& 
+%\begin{flushleft}
+%\vspace{-0.4cm}
+%\hspace{0.3cm} The mission of this specification is to standardize the process of destroying a resource and identify mechanisms 
+%to monitor its lifetime. 
+%\end{flushleft}\\[-0.2cm]
+%\hline
+
+%\begin{center}
+%\vspace{0.4cm}
+%{\bf WS-Notification}
+%\end{center}
+%& 
+%\begin{flushleft}
+%\vspace{-0.2cm}
+%\hspace{0.3cm} This specification allows a \emph{NotificationProducer} to send \emph{notifications} 
+%to a \emph{NotificationConsumer} in two ways: without following any formalism or with a predefined formalism.
+%\end{flushleft}\\%[-0.1cm]
+%\hline
+
+%\end{tabular}
+%\end{center}
+%\caption{\label{tabla}WSRF main elements}
+%\end{table}
+%\vspace{-0.5cm}
+\begin{itemize}
+\item {\bf WS-ResourceProperties}: There is a precise specification 
+to define WS-Resource properties, based on 
+a Resource Properties Document (RPD),  which
+defines the properties of the associated resource
+(disk size, processor capacity, \ldots). 
+Resources are identified by their EPRs,
+so we will also use this mechanism for identification purposes,
+but, for simplicity, we will consider these references as static, instead
+of assuming a dynamic mechanism to assign them.
+As a shorthand notation, EPRs will also be used to denote
+the resource property values.
+
+Furthermore,
+a WSDL file must be provided in order to
+facilitate the allowed resource operations.
+Among the operations allowed by the standard are \emph{GetResourceProperty} 
+and \emph{SetResourceProperty}, which are used to manipulate 
+the resource property values.
+%
+%The developer 
+%typically uses a Web service interface defined by others, so a 
+%method to standardise the format for reporting error messages 
+%facilitates the work.
+%
+%
+\item {\bf WS-ResourceLifetime}: The WSRF specification does not 
+provide a standard way to create resources. However,
+resources have an associated lifetime, which means that once
+this time has elapsed, the resource is considered to be destroyed,
+and the subscribers could be notified.
+%
+We have then included, for completeness, an operation to create
+resources, {\em createResource}, in which the initial value
+of the resource, its lifetime and the activity that must
+be launched upon its destruction are indicated. We also have
+an operation in order to modify the current resource lifetime,
+{\em setLifeTime}. 
+
+\item {\bf WS-Notification}: Clients can subscribe to WSRF
+resources in order to be notified about some topics (resource
+conditions). We therefore include the {\em subscribe} operator 
+for a customer to subscribe to a resource, indicating the
+condition under which it must be notified, and the activity that
+must be executed 
+upon that event.
+%This specification allows a 
+%\emph{NotificationProducer} to send \emph{notifications} 
+%to a \emph{NotificationConsumer} in two ways: Without following any 
+%formalism or with a predefined formalism. 
+%Thus, the second option allows the user to receive a wide 
+%range of notification messages, but the user can receive many 
+%topics in which they are not interested because the information 
+%sent in these messages is obtained from a topics tree stored in 
+%the Web service. 
+
+
+%\begin{enumerate}
+%\item First, the consumer subscribes to the topic SystemLoadHigh, so internally it creates a \emph{Subscription resource} with the subscription information. The producer must implement a method \emph{Subscribe} and the consumer a method \emph{Notify}.
+%\item Then, the producer must send a notification because the system has a certain workload. For example, our system can send notifications when the workload is greater than 50\%.
+%\item Finally, the producer sends the notification calling the operation \emph{Notify} in the consumer.
+%\end{enumerate}
+
+%The important concepts in this message are \emph{UseNotify} used to decide whether the notification message follows the WS-Notification notion or not, \emph{Precondition} which is the condition that generates notification messages, that is, if this condition is accomplished the messages are generated, but must also satisfy the condition \emph{selector} that is used to decide when transmitting messages. Moreover, \emph{SubscriptionPolicy} could be used to manage the ratio of transmission of the messages (e.g., no more than 3 per second) and \emph{InitialTerminationTime} contains a suggestion of the lifetime subscription. WSRF also models the messages to pause and resume the subscription. Moreover, WSRF offers the possibility to a service (that has just joined to a subscription) to get the history of notifications on a particular topic.
+
+\end{itemize}
+
+In WSRF/WSN there are some additional technical elements to 
+increase the modelling
+power that due to its technical nature
+are not considered in our framework. Among them, we
+have the so-called {\em WS-Basefaults}, which 
+define a standard format for delivering error messages. 
+{\em WS-ServiceGroup} is a tool to create ``Service groups'',
+which can be created
+with the purpose of sharing a common set of properties, i.e. it is 
+a mechanism 
+for grouping together different Web services with similar behaviour.
+Finally, {\em WS-BrokeredNotification} allows us to define
+\emph{NotificationBrokers}, which are intermediary elements who, 
+among other things, allow interactions between one or more 
+\emph{NotificationPublishers} and one or more 
+\emph{NotificationConsumers}. 
+
+
+
+\subsection{Related Work}
+
+%LLL PENDIENTE
+WS-BPEL has been extensively studied with many formalisms, such as
+Petri nets, Finite State Machines and process algebras, but 
+there are only a few works considering WS-BPEL enriched with 
+WSRF, and they only show a description of this union, 
+without a formalization of the model.
+In \cite{Slomiski:2006} Slomiski uses BPEL4WS in Grid environments and discusses the
+benefits and challenges of extensibility in the particular case of OGSI workflows
+combined with WSRF-based Grids. Other two works centred around Grid environments are 
+\cite{Leymann:2006} and \cite{Ezenwoye:2007}. The first justifies 
+the use of WS-BPEL extensibility to allow the combination of different GRIDs, whereas
+Ezenwoye et al.~\cite{Ezenwoye:2007} share their experience on WS-BPEL to integrate,
+create and manage WS-Resources that implement the factory/instance pattern.
+
+On the other hand, Ouyang et al. \cite{Ouyang:2007} define the necessary elements for translating WS-BPEL processes into Petri nets. Thus, they
+cover all the important aspects in the standard such as exception handling, dead path elimination and so on. The model they consider differs from ours in that we formalize the whole
+system as a composition of orchestrators with resources associated, whereas they describe the system as a general scope with nested sub-scopes leaving aside the possibility of administering resources. Furthermore, we have also formalized the event handling and notification mechanisms.  
+Another extensive semantics for WS-BPEL 2.0
+is presented in \cite{Dumas:2008} by Lohmann, which introduces two new interesting improvements. They define several patterns to simplify some huge nets and introduce the semantics for the WS-BPEL 2.0 new patterns. Related to $\pi$-calculus semantics, Dragoni and Mazzara \cite{Dragoni:2009} 
+propose a theoretical scheme focused on dependable composition for the  WS-BPEL recovery
+framework. In this approach, the recovery framework is simplified
+and analysed via a conservative extension of $\pi$-calculus. The
+aim of this approach clearly differs from ours, but it helps us to have
+a better understanding of the WS-BPEL recovery framework. Other work focused on the WS-BPEL
+recovery framework is \cite{Qiu:2005}. Although this is more focused in the compensation handler, they describe the corresponding rules
+that manage a Web service composition. Our work is therefore more general as we define rules for nearly all possible activities instead of focusing only on the recovery framework. In addition, we also consider time constraints. Finally, we would like to highlight the works of Farahbod et al.~\cite{Farahbod:2005} and Busi et al. \cite{Busi:2005}. In the first one, the authors extract an abstract operational semantics for WS-BPEL based on abstract state machines (ASM) defining the framework BPEL$_{AM}$ to manage the agents who perform the workflow activities. In this approach time constraints are considered, but they do not formalize the timed model. On the other hand, the goal of the latter one is fairly similar to ours. They also define a $\pi$-calculus operational semantics for WS-BPEL and describe a conformance notion. They present all the machinery to model Web service compositions (choreographies and orchestrations). The main difference with our work is that we deal with distributed resources. %In a similar fashion Luchi and Mazzara in \cite{Lucchi07} presents other $\pi$-calculus operational semantic, \textit{Web}$\pi_{\infty}$, which is focused on the idea of event notification as the unique error handling mechanism. It is clear that this proposal differs from ours since they focus their attention in the error handling mechanism, however their claiming of simplifying the error handling using only the notification mechanism can be performed in our proposal since this is the mechanism used in the resource framework and therefore a technique shared by WS-BPEL and WS-RF.
+
+For further details about the formalization of service oriented languages we would like to encourage the reader to review the works presented at the SENSORIA project in \cite{Wirsing2011bis}. Here, an extensive work is presented from different international research groups aimed by the common goal of providing a rigorous software engineering viewpoint for service-oriented system using as a cornerstone the formal specification of Web Services and WS-BPEL in particular.% Works such as SOCK \cite{Wirsing2011bis}, CaSPiS \cite{Bettini2008}, COWS \cite{Lapadula2007}, B-lite \cite{Lapadula2008} or Orc \cite{Kitchin2009} are either presented or reviewed. The first one, SOCK (Service Oriented Computing Kernel \cite{Wirsing2011bis}), is a formal calculus which aims at characterizing the basic features of Service Oriented Computing and takes its inspiration from WS-BPEL, considered by the authors as the ``de facto" standard for Web Service technology. The second one, CaSPiS (Calculus of Services with Pipelines and Sessions \cite{Bettini2008}) uses the Java framework IMC. Authors take advantage of the already built-in IMC features such us session oriented and pattern matching communication mechanisms easing the task of implementing in Java all CaSPiS abstractions. Other one, COWS (Calculus for Orchestration of Web Services \cite{Lapadula2007}), is a new foundational language for SOC whose design has been influenced by WS-BPEL. COWS combines a number of elements from process calculi, e.g. asynchronous communication, polyadic synchronization, pattern matching, protection, delimited receiving and killing activities. Other one reviewed also in this book is B lite \cite{Lapadula2008}. This is a lightweight language for Web services orchestration designed around some of WS-BPEL peculiar features like partner links, process termination, message correlation, long-running business transactions and compensation handlers aiding to clarify some ambiguous aspects of the WS-BPEL specification. The last one, Orc \cite{Kitchin2009}, is not influenced by any other language used for orchestration purposes like WS-BPEL. The authors define the language as a novel language for distributed and concurrent programming which provides uniform access to computational services, including distributed communication and data manipulation, through sites. Using four simple concurrency primitives, the programmer orchestrates the invocation of sites to achieve a goal, while managing timeouts, priorities, and failures. This language uses as a basic activity the information published by a site and therefore each site invocation always finishes with one or more either nested or parallel publications.
+
+
+Table \ref{table_rw_comparison} shows a brief comparison among all the works where, the columns show the WS-BPEL version considered, the coverage degree of the recovery framework, whether they use WSRF, the formalism they use, the focus area and if the work is supported by a tool.
+
+\begin{table}
+
+\scriptsize{
+
+\begin{tabular}{|c|c|c|c|c|c|c|}
+
+\hline
+
+Author & WS-BPEL & Rec. & WSRF & Formalism & Focus & Tool \\
+
+
+\hline
+Slomiski\cite{Slomiski:2006} & 1.0 & $\times$ & $\checkmark$ & -- & Extensibility & $\times$ \\
+
+\hline
+
+Ezenwoye\cite{Ezenwoye:2007} & 1.0 & $\times$ & \checkmark & -- & Resource Management & $\times$ \\
+
+\hline
+
+Ouyang\cite{Ouyang:2007} & 1.0 & Part & $\times$ & Petri nets & BPEL analysis & \checkmark \\
+
+\hline
+
+Lohmann\cite{Dumas:2008} & 2.0 & \checkmark & $\times$ & Petri nets & BPEL analysis & \checkmark \\
+
+\hline
+
+Dragoni\cite{Dragoni:2009} & 2.0 & \checkmark & $\times$ & $\pi$-calculus & FCT & $\times$ \\
+
+\hline
+
+Qiu\cite{Qiu:2005} & 1.0 & Part & $\times$ & Proc. Algebra & FC & $\times$ \\
+
+\hline
+
+Farahbod\cite{Farahbod:2005} & 1.0 & Part & $\times$ & Finite State & Analysis & $\times$ \\
+
+&&&& Machines &&\\
+
+\hline
+
+Busi\cite{Busi:2005} & 1.0 & Part & $\times$ & Proc. Algebra & Conformance& $\times$ \\
+&&&&& Chor. vs Orch. & \\
+
+\hline
+
+Our work & 2.0 & Part & \checkmark & Petri nets & Resource Management & \checkmark \\
+
+\hline
+
+\end{tabular}
+
+}
+
+\caption{Bibliography comparison.} \label{table_rw_comparison}
+
+\end{table}

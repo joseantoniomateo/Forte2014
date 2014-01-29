@@ -1,0 +1,13 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Background and Related Work}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Overview of WS-BPEL/WSRF/WSN}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Related Work}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Prioritised-Timed Coloured Petri Nets}{}% 5
+\BOOKMARK [1][-]{section.4}{PTCPN Semantics for BPEL+WSRFN}{}% 6
+\BOOKMARK [2][-]{subsection.4.1}{Basic activities}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.2}{Ordering structures}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.3}{WSRF/WSN compliant}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.4}{Orchestration translation}{section.4}% 10
+\BOOKMARK [1][-]{section.5}{Case Study: Automatic management system for stock market investments}{}% 11
+\BOOKMARK [2][-]{subsection.5.1}{Analysis}{section.5}% 12
+\BOOKMARK [1][-]{section.6}{Conclusions and Future Work}{}% 13

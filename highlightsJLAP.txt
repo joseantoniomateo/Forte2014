@@ -1,0 +1,12 @@
+
+- Domain composite web services technologies.
+
+- Problem, web services are usually stateless.
+
+- Solution, bringing together protocols to specify resources and
+web services: WSRF/WSN and WS-BPEL.
+
+- Analysis via formal methods using well know formalism, Coloured
+Petri nets.
+
+- Supported by CPNtools one of the leading tools in Petri nets domain.

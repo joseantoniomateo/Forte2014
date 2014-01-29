@@ -1,0 +1,421 @@
+% This is LLNCS.DEM the demonstration file of
+% the LaTeX macro package from Springer-Verlag
+% for Lecture Notes in Computer Science,
+% version 2.4 for LaTeX2e as of 16. April 2010
+%
+\documentclass{elsarticle}
+
+%
+\usepackage{makeidx}  % allows for indexgeneration
+\usepackage{pstricks}
+%\usepackage{auto-pst-pdf}
+\usepackage{lscape}
+\usepackage{hyperref}
+%\usepackage[cp850]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{enumerate}
+\usepackage{latexsym,makeidx,graphicx,color,colortbl}
+\usepackage{moreverb,amsmath,amssymb}
+\usepackage[latin1]{inputenc}
+\usepackage{tabulary}
+\usepackage{multicol}
+\usepackage{pdflscape}
+\usepackage{boxedminipage}
+\usepackage{subfig}
+\usepackage{epsfig}
+\usepackage{pdfpages}
+\usepackage{arydshln}
+\usepackage{epstopdf}
+\usepackage{setspace}
+\pagestyle{plain}
+\parindent 0.5cm
+\parskip=0cm
+\renewcommand{\comment}[1]{}
+\newcommand{\entero}{\mathbb{Z}}
+\ifx\theorem\NoDefinido
+  \newcommand{\ComaMat}{}
+  \newcommand{\PuntoMat}{}
+  \newtheorem{theorem}{Theorem}[section]
+  \def\thetheorem{\thesection.\arabic{theorem}}
+  \newtheorem{definition}[theorem]{Definition}
+  \newtheorem{conjetura}[theorem]{Conjecture}
+  \newtheorem{proposition}[theorem]{Proposition}
+  \newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem{lemma}[theorem]{Lemma}
+  \newtheorem{fact}[theorem]{Fact}
+  \newtheorem{example}[theorem]{Example}
+\fi
+\newenvironment{prueba}{\noindent {\it Proof: }}{\qed}
+\newenvironment{skecht}{\noindent {\it Proof (sketch): }}{\qed}
+
+
+\newcommand{\bdfn}{\begin{definition} \begin{rm}}
+\newcommand{\edfn}{\end{rm}$ $\qed \end{definition}}
+%\newcommand{\bdfn}{\begin{definition} \begin{rm}}
+%\newcommand{\edfn}{\vspace{-2ex}
+%{\flushright $\Box$\\
+%\mbox{}\vspace{-2ex}
+%} \end{rm} \end{definition}}
+\newcommand{\bthm}{\begin{theorem} \begin{rm}}
+\newcommand{\ethm}{\vspace{-4ex}{\flushright $\Box$\\
+\mbox{}\vspace{-4ex}} \end{rm} \end{theorem}}
+\newcommand{\bprop}{\begin{proposition} \begin{rm}}
+\newcommand{\eprop}{\vspace{-4ex}{\flushright $\Box$\\
+\mbox{}\vspace{-4ex}} \end{rm} \end{proposition}}
+\newcommand{\bcor}{\begin{corollary}\begin{rm}}
+\newcommand{\ecor}{\vspace{-4ex}{\flushright $\Box$\\
+\mbox{}\vspace{-4ex}} \end{rm} \end{corollary}}
+\newcommand{\blem}{\begin{lemma} \begin{rm}}
+\newcommand{\elem}{\vspace{-4ex}{\flushright $\Box$\\
+\mbox{}\vspace{-4ex}} \end{rm} \end{lemma}}
+\newcommand{\bfact}{\begin{fact} \begin{rm}}
+%\newcommand{\efact}{%\vspace{-4ex}{\flushright $\Box$\\
+%\mbox{}%\vspace{-4ex}} \end{rm} \end{fact}}
+%\newcommand{\bex}{\begin{example} \begin{rm}}
+%\newcommand{\eex}{%\vspace{-2ex}{\flushright $\Box$\\
+%\mbox{}2ex}} \end{rm} \end{example}}
+%%
+% signo menos con un punto encima
+\newcommand{\menos}{\renewcommand{\arraystretch}{0.0002}
+\begin{array}[b]{c}
+\scriptstyle{.} \\
+-
+\end{array}\renewcommand{\arraystretch}{1.0}}
+
+% simbolo de union
+\newcommand{\union}[2]{\renewcommand{\arraystretch}{0.45}
+\begin{array}{c}
+{\scriptstyle #2}\\
+\bigcup\\
+{\scriptstyle #1}
+\end{array}\renewcommand{\arraystretch}{1.0}}
+
+% simbolo de union
+\newcommand{\unions}[1]{\renewcommand{\arraystretch}{0.47}
+\begin{array}[t]{c}
+\bigcup\\
+{\scriptstyle #1}
+\end{array}\renewcommand{\arraystretch}{1.0}}
+
+% simbolo de interseccion
+\newcommand{\inter}[2]{\renewcommand{\arraystretch}{0.45}
+\begin{array}{c}
+{\scriptstyle #2}\\
+\bigcap\\
+{\scriptstyle #1}
+\end{array}\renewcommand{\arraystretch}{1.0}}
+
+%suma con cosas arriba y debajo
+\newcommand{\suma}[2]{\renewcommand{\arraystretch}{0.42}
+\hspace*{-0.1cm}
+\begin{array}{c}
+{\scriptstyle #2}\\
+{\mbox{\huge $\Sigma$}}\\
+{\scriptstyle #1}
+\end{array}\hspace*{-0.1cm}\renewcommand{\arraystretch}{1.0}}
+
+%suma con solo cosas abajo
+\newcommand{\sumas}[1]{\renewcommand{\arraystretch}{0.42}
+\hspace*{-0.1cm}
+\begin{array}[t]{c}
+{\mbox{\huge $\Sigma$}}\\
+{\scriptstyle #1}
+\end{array}\hspace*{-0.1cm}\renewcommand{\arraystretch}{1.0}}
+
+% a con subrayado debajo ª
+\newcommand{\suba}{$\!~^{\underline{{\small a}}}~$}
+
+% sumatorio
+\newcommand{\sumad}[2]{\renewcommand{\arraystretch}{0.48}
+\begin{array}[t]{c}
+{\mbox {\huge $\Sigma$}}\\
+{\scriptstyle #1}\\
+{\scriptstyle #2}
+\end{array}\renewcommand{\arraystretch}{1.0}}
+
+\newcommand{\nat}{{\rm I\! N}}
+
+% sumatorio triple
+\newcommand{\sumat}[3]{\renewcommand{\arraystretch}{0.48}
+\begin{array}[t]{c}
+{\mbox {\huge $\Sigma$}}\\
+{\scriptstyle #1}\\
+{\scriptstyle #2}\\
+{\scriptstyle #3}
+\end{array}\renewcommand{\arraystretch}{1.0}}
+
+% maximo con 1 parametro
+\newcommand{\maximo}[1]{\renewcommand{\arraystretch}{0.40}
+\begin{array}[t]{c}
+max\\
+{\scriptstyle #1}
+\end{array}\renewcommand{\arraystretch}{1.0}}
+
+\newcommand{\maximot}[1]{\renewcommand{\arraystretch}{0.40}
+\begin{array}[t]{c}
+max_{\leq_1}\\
+{\scriptstyle #1}
+\end{array}\renewcommand{\arraystretch}{1.0}}
+
+% maximo con 2 parametros
+\newcommand{\maximod}[2]{\renewcommand{\arraystretch}{0.45}
+\begin{array}[t]{c}
+max\\
+{\scriptstyle #1}\\
+{\scriptstyle #2}
+\end{array}\renewcommand{\arraystretch}{1.0}}
+
+% pila con menos distancia. Fila de abajo en peque\~{n}o
+\newcommand{\pila}[2]{\renewcommand{\arraystretch}{0.48}
+\begin{array}[t]{c}
+#1\\
+{\scriptstyle #2}
+\end{array}\renewcommand{\arraystretch}{1.0}}
+
+% precondicion
+\newcommand{\precond}[1]{\hspace*{-0.4em}~^{\bullet}\hspace*{-0.05em}#1}
+
+
+
+
+\begin{document}
+
+\title{A Coloured Petri Net Approach to Model and 
+Analyse Stateful Workflows Based on WS-BPEL and WSRF/WSN\tnoteref{t1}}
+\tnotetext[t1]{Research partially supported by projects
+TIN2009-14312-C02-02 and TIN2012-36812-C02-02.}
+
+
+
+%\author{ Gregorio~D\'{\i}az~and~Ismael~Rodr\'{i}guez%
+%\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem Gregorio Díaz is with the Department
+%of Computer Science, University of Castilla-La Mancha, 02071, Albacete, Spain.\protect\\
+%E-mail: gregorio.diaz@uclm.es \IEEEcompsocthanksitem Ismael Rodríguez
+%is with the Dept. Sistemas Informáticos y Computación,
+%Universidad Complutense de Madrid, 28040, Madrid, Spain.\protect\\
+%E-mail: isrodrig@sip.ucm.es}
+%\thanks{}}
+
+
+\author{Jos\'e Antonio Mateo}
+\ead{joseantonio.mateo@uclm.es}
+\author{Valentín Valero}
+\ead{valentin.valero@uclm.es}
+\author{Hermenegilda Macià}
+\ead{hermenegilda.macia@uclm.es}
+\author{Gregorio Díaz}%\corref{cor1}}
+\ead{gregorio.diaz@uclm.es}
+
+%\cortext[cor1]{Corresponding author}
+%\cortext[cor2]{Principal corresponding author}
+%\fntext[fn1]{This is the specimen author footnote.}
+%\fntext[fn2]{Another author footnote, but a little more longer.}
+%\fntext[fn3]{Yet another author footnote. Indeed, you can have
+%any number of author footnotes.}
+
+
+\address{Universidad de Castilla-La Mancha, Instituto de
+Investigación en Informática, 02071, Albacete, Spain.} 
+
+
+\begin{abstract}
+Composite Web services technologies are widely used 
+due to their ability to provide interoperability among services 
+from different companies. Web services are usually \emph{stateless},
+which means that no state is stored from the clients viewpoint. 
+However, some new applications and services have emerged, which
+require to capture the state of some resources. Thus,
+new standards to model Web services states have appeared, 
+such as Open Grid Services Infrastructure (OGSI), 
+which became Web Services Resource Framework (WSRF). 
+In this paper, we present a formal model based
+on WS-BPEL and WSRF/WSN, and we provide a prioritised-timed coloured Petri net semantics for 
+it. This semantics captures the main activities of WS-BPEL considering
+also other important aspects, both from WS-BPEL and 
+WSRF/WSN, such as fault and event handlers, time-outs and
+the WS-Notification publish-subscribe system.
+% to manage Cloud/Grid notifications.   
+\end{abstract}
+\maketitle
+
+\input{introd.tex}
+
+\input{semantics.tex}
+
+%\input{ptcpn.tex}
+
+%\input{PTCPN_mere.tex}
+
+%\input{safeness.tex}
+
+\section{Case Study: Automatic management system for stock market investments}\label{cs}
+
+\input{casestudy}
+
+\input{analysis}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Conclusiones
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusions and Future Work}\label{conclu}
+In this paper, we have integrated two complementary approaches in order to improve the definition of business processes models on BPEL by adding
+the capability of storing their state. We have thus transformed {\em stateless} business processes into {\em stateful} business processes. To this end, we have defined a Prioritized-Timed Coloured Petri net model and presented its corresponding semantics to represent the constructions of WS-BPEL and the standards selected for the definition of resources and notifications, namely WSRF/WSN. Apart from including the notion of state in business processes, our work also includes a publish-subscribe notification system based on WS-BaseNotification, presenting a PTCPN model and its semantics. Thus, an orchestrator can show interest of being notified when a condition holds, e.g, the load of a server exceeds a certain limit. Our approach is based on the one used in CPNTools, allowing us to take advantage of its capability of analysis and verification systems. As future work, we plan to study some interesting formal properties such as safeness, soundness and so on. Furthermore, it will be also of interest to complete the semantics of WS-BPEL and WSRF/WSN by adding new features such as compensation and termination handling, and brokered notification in WSN. As regards WSRF, it seems that it could be also interesting to consider multiple
+properties from different data domains, in order
+to have a more realistic and usable model.
+%
+% ---- Bibliography ----
+%
+\begin{thebibliography}{10}
+
+\bibitem{BPEL4WS}
+T.~Andrews et. al.
+\newblock {BPEL4WS -- Business Process Execution Language for Web Services, 
+Version 1.1, 2003.\\ {\em
+  http://www.ibm.com/developerworks/library/specification/ws-bpel/}}.
+
+%\bibitem{Baldoni:2003}
+%R. Baldoni, M. Contenti, S.T. Piergiovanni and A. Virgillito,
+%{\em Modelling Publish/Subscribe Communication Systems: Towards a Formal Approach}.
+%In IEEE International Workshop on Object-Oriented Real-Time Dependable
+%Systems (WORDS), pp. 304-322, 2003.
+
+\bibitem{Banks2006}
+T. Banks, \emph{Web Services Resource Framework (WSRF) - Primer}, OASIS, 2006.
+
+
+%\bibitem{Bettini2008}
+% L. Bettini, R. De Nicola and M. Loreti,
+% {\em Implementing Session Centered Calculi},
+%In proceedings of10th International Conference COORDINATION 2008, Oslo, Norway, June 4-6, 2008. Lecture Notes in Computer Science, 5052, pg. 17-32, 2008.
+
+%\bibitem{Bruni2011}
+%R. Bruni, H. Foster, A. Luch-Lafuente, U. Montanari and E. Tuosto,
+%{\em A formal support to business and architectural design for service-oriented systems}, Rigorous Software Engineering for Service-Oriented Systems, Lecture Notes in Computer Science, vol. 6582, 2011.
+
+\bibitem{Busi:2005} N. Busi, R. Gorrieri, C. Guidi, R. Lucchi and G.
+Zavattaro,
+{\em Choreography and Orchestration: A Synergic Approach
+for System Design}.
+In International Conference of Service Oriented Computing (ICSOC),
+Lecture Notes in Computer Science, vol. 3826, pp. 228-240, 2005.
+
+%\bibitem{Busi06} N. Busi, R. Gorrieri, C. Guidi, R. Lucchi and G.
+%Zavattaro.
+%{\em Choreography and Orchestration Conformance for System Design}.
+%In International Conference on Coordination Models and Languages (COORDINATION).
+%Lecture Notes in Computer Science, vol. 4038, pp. 63-81, 2006.
+\bibitem{CPNTools}
+CPNTools website, \url{http://cpntools.org/}.
+
+\bibitem{Czajkowski2004}
+K. Czajkowski,  D. Ferguson, I. Foster, J. Frey, S. Graham, I. Sedukhin, D. Snelling, S. Tuecke and W. Vambenepe, \emph{The WS-Resource Framework Version 1.0}, http://www.globus.org/wsrf/specs/ws-wsrf.pdf, 2004.
+
+\bibitem{Maria2012}
+M. D\'{i}az, V. Valero, H. Macia, J. A. Mateo and G. D\'{i}az, \emph{BPEL-RF Tool: An Automatic Translation from WS-BPEL/WSRF Specifications
+to Petri Nets}. In Seventh International Conference on Software Engineering Advances (ICSEA), pp. 325-330, 2012.
+
+\bibitem{Dragoni:2009} N. Dragoni and M. Mazzara,
+{\em A formal Semantics for the WS-BPEL Recovery Framework - The $pi$-Calculus Way}.
+In International Workshop on Web Services and Formal Methods (WS-FM).
+Lecture Notes in Computer Science, vol. 6194, pp. 92-109, 2009.
+
+\bibitem{Dumas:2008}N. Lohmann,
+{\em A Feature-Complete Petri Net Semantics for WS-BPEL 2.0}.
+In International Workshop on Web Services and Formal Methods (WS-FM).
+Lecture Notes in Computer Science, vol. 4937, pp. 77-91, 2008.
+
+\bibitem{Ezenwoye:2007}
+O. Ezenwoye, S.M. Sadjadi, A. Cary, and M. Robinson,
+{\em Orchestrating WSRF-based GridServices}.
+Technical Report FIU-SCIS-2007-04-01, 2007.
+
+\bibitem{Farahbod:2005}
+R. Farahbod, U. Gl\"asser and M. Vajihollahi,
+{\em A Formal Semantics for the Business Process Execution Language for Web Services}. 
+In Joint Workshop on Web Services and Model-Driven Enterprise Information Services (WSMDEIS), pp. 122-133, 2005.
+
+\bibitem{Foster2004}
+I. Foster, J. Frey, S. Graham, S. Tuecke, K. Czajkowski, D. Ferguson, F. Leymann, M. Nally, T. Storey and S. Weerawaranna, \emph{Modeling Stateful Resources with Web Services}, Globus Alliance, 2004.
+
+\bibitem{Jensen2009}
+K. Jensen and L. M. Kristensen, \emph{Coloured Petri Nets - Modelling and Validation of Concurrent Systems}, Springer, 2009.
+%\bibitem{820121}
+%R. Hamadi and B. Benatallah.
+%\newblock {\em A {P}etri {N}et-based {M}odel for
+%{W}eb {S}ervice {C}omposition.}
+%\newblock In Australasian database conference, vol. 17, pp. 191-200, 2003.
+
+%\bibitem{Kitchin2009}
+%D. Kitchin, A. Quark, W. Cook and J. Misra.
+%{\em The Orc Programming Language}.
+%Proceedings of FMOODS/FORTE, Springer Verlag, LNCS 5522, pp. 1-25, 2009.
+
+%\bibitem{Lapadula2008}
+%A. Lapadula, R. Pugliese and F. Tiezzi,
+%{\em A Formal Account of WS-BPEL}.
+%Lecture Notes in Computer Science, Volume 5052, pp. 199-215,
+%2008.
+
+
+%\bibitem{Lapadula2007} A. Lapadula, R. Pugliese and F. Tiezzi.
+%{\em Calculus for Orchestration of Web Services}. Lecture Notes in
+%Computer Science, vol. 4421, pp. 33-47, 2007.
+
+
+\bibitem{Leymann:2006} F. Leyman.
+ {\em Choreography for the Grid: towards fitting BPEL to the resource framework}.
+Journal of Concurrency and Computation : Practice \& Experience, 
+vol. 18, issue 10, pp. 1201-1217, 2006.
+
+%\bibitem{Lohman:2009} N. Lohmann, E. Verbeek, C. Ouyang and C. Stahl.
+%{\em Comparing and Evaluating Petri Net Semantics for BPEL}.
+%Journal of Business Process Integration and Management,
+%vol. 4, issue 1, pp. 60-73, 2009.
+
+%\bibitem{Lucchi07} R. Lucchi and M. Mazzara.
+%{\em A Pi-calculus Based Semantics for WS-BPEL}.
+%Journal of Logic and Algebraic Programming, vol. 70, issue 1, pp. 96-118, 2007.
+
+\bibitem{wsfm2011} J.A. Mateo, V. Valero and G. Diaz.
+{\em An Operational Semantics of BPEL Orchestrations Integrating Web Services
+Resource Framework}.
+In International Workshop on Web Services and Formal Methods (WS-FM), 2011.
+
+\bibitem{Ouyang:2007} C. Ouyang, E. Verbeek, W.M.P. van der Aalst, S. Breutel, M. Dumas and A.H.M. ter Hofstede. {\em Formal semantics and analysis of control flow in WS-BPEL}.
+Science of Computing Programming, vol. 67, issue 2-3, pp. 162-198, 2007.
+
+\bibitem{Qiu:2005}Z. Qiu, S. Wang, G. Pu and X. Zhao. {\em Semantics of BPEL4WS-Like Fault and Compensation Handling}.
+World Congress on Formal Methods (FM), pp. 350-365, 2005.
+
+\bibitem{Slomiski:2006} A. Slomiski. {\em On using BPEL extensibility
+to implement OGSI and WSRF Grid workflows}.
+Journal of Concurrency and Computation : Practice \& Experience,
+vol. 18, pp. 1229-1241, 2006.
+
+\bibitem{Wirsing2011bis}
+M. Wirsing and M. Holzl (Eds.),
+{\em Rigorous Software Engineering for Service-Oriented Systems}, 
+Lecture Notes in Computer Science, Vol. 6582. Springer-Verlag, 2011.
+
+\bibitem{wsaddressing}
+\newblock {Web Services Addressing (WS-Addressing), 
+\\ {\em
+  http://www.w3.org/Submission/ws-addressing/}}.
+%\bibitem{Wirsing2011}
+%M. Wirsing, R. De Nicola, S. Gilmore, M. Holzl, R.
+%Lucchi, M. Tribastone and G. Zavattaro
+%{\em Core Calculi for Service-Oriented Computing}, 
+%Rigorous Software Engineering for Service-Oriented Systems, Lecture Notes in Computer %Science, vol. 6582, 2011.
+
+%\bibitem{W3C}
+%World Wide Web~Consortium (W3C).
+%\newblock {{\em http://www.w3.org/}}.
+
+%\bibitem{WSCDL}
+%Web Services Choreography Description Language Version 1.0 (WS-CDL).
+%\newblock {{\em http://www.w3.org/TR/ws-cdl-10/}}.
+
+\end{thebibliography}
+\end{document}

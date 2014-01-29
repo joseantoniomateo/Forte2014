@@ -1,0 +1,88 @@
+\subsection{Analysis}\label{analysis}
+CPNTools offers us two forms to check the correctness of our system: formal verification and simulation. 
+First, the simulation helps designers to understand how the system works and it is a mean to
+detect possible errors in early stages of the development process in order to refine the model according the
+clients' requirements. Besides, formal verification through state space
+analysis could be done in order to ensure that our system achieves some formal properties such as liveness, deadlock-freeness and so on.
+In this way, Table \ref{state_space} shows the
+results obtained considering 1, 2, 3, 4 or 5 investors. Note that we have considered the following assumptions:
+
+\begin{itemize}
+ \item The ``auction'' time {\em at0} is limited to 10 time units.
+ \item The resource is active during 15 time units ({\em lft=15}).
+ \item The resource value {\em x} is 100 money units.
+ \item The value of subscription of each investor {\em i}, {\em $x_i$}, is $x-(9+i)$, that is, if the system has only one investor its subscription guard will be $x<90$, whereas with 5 investors, the last investor will have a subscription guard of $x<86$.
+ \item The function {\it bid} will fluctuate the stocks price between -2 and 1 in order to simulate that the price only can rise 1 and drop 2 at most each time unit. 
+\end{itemize}
+We will focus on deadlock-freeness to ensure that the
+system never gets stuck while the participants have activities to do
+in their workflow. We have leveraged the functions offered by CPNTools
+to demonstrate that in all dead markings of the system the final
+place is marked, which leads us to conclude the system has finished
+correctly. This final place, {\em Pokfinal0}, is marked by a transition when all the participants have finished their workflow. For the sake of clarity, we have not drawn this place in each figure. Thus, the next SML code checks when this situation
+occurs: \mbox{{\small{fun DesiredTerminal n =((Mark.PetriNet'Pokfinal0
+1 n) ==
+1'true)}}}, \\
+which returns {\em true} if the place {\it Pokfinal0} is marked. In
+addition to this, it is necessary to evaluate the following predicate
+to check that the list of
+dead marking contains the marking of the {\em Pokfinal0} place:
+\begin{center}
+\mbox{{{  PredAllNodes
+DesiredTerminal=ListDeadMarkings()}}}. 
+\end{center}
+\begin{table} [htp]
+\centering
+\footnotesize{
+\begin{tabular}{|c|c|c|c|c|c|}
+  \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+     & \multicolumn{5}{c|}{Number of investors}\\\cline{2-6}%\hline
+  Properties     & 1 & 2 & 3 & 4 & 5 \\ \hline
+  State Space Nodes & 3561  & 7569 & 16983 & 50350 & 89879 \\
+  State Space Arcs & 5203 & 12843 & 33271  & 112101 &262215 \\
+  Time (s) & 2 & 7 & 23 & 146 &  1140\\
+  Dead Markings & 124 & 244  & 454  & 1108 &  874 \\
+  \hline
+\end{tabular}
+}
+\vspace{-0.2cm}
+\caption{State space analysis results}
+\label{state_space}
+\end{table}
+%\vspace{-0.5cm}
+In Fig. \ref{queries}, we show the results offered by CPNTools to
+our queries for the case of {\bf three} investors. Here, it can be
+appreciated that all dead markings hold the predicate {\em DesiredTerminal}, and, therefore, when the system reaches a dead marking is because it has terminated correctly, which demonstrates the absence of deadlocks in our case study. 
+%On the contrary, in Fig. \ref{RG} we can see a part of the reachability
+%graph from the initial marking to a dead marking. This trace can be used for the designer to follow the path from the initial marking to the final marking in order to inspect if the system behaves according to its specification.
+\vspace{-0.2cm}
+%In this subsection, we are going to show the experiments conducted for the case study. CPNTools offers two ways
+%to demonstrate the correctness of the system: formal verification and simulation. On the hand, the user can use
+%the state space analysis tool to do formal verification
+%in order to check some properties of the model such as liveness, deadlock-freeness, fairness and so on.
+ %It is worthwhile to mention we will obtain more
+%than one dead marking as we do not introduce in the model any
+%mechanism to clean the marking of the variables, the partnerlinks,
+%etc. when the final marking is reached. The solution is pretty
+%straightforward, but could be a little bit tedious to draw
+%transitions to reset the places when the final place is marked. As
+%opposed to this, w
+\begin{figure}[h]
+\begin{center}%\fbox{
+\includegraphics[width=\columnwidth,height=1.5cm]{Images/queries.eps}
+\vspace{-0.7cm}
+\caption{Result of the queries in CPNTools.}\label{queries}
+\end{center}
+\end{figure}
+%\vspace{-0.7cm}
+%
+%\vspace{.3cm}
+%
+%\begin{figure}[h]
+%%\fbox{
+%\includegraphics[width=\columnwidth,height=6cm]{Figures/grafomarcadoscpn.eps}
+%\vspace{-0.6cm}
+%\caption{Partial reachability Graph (3 investors).}\label{RG}
+%\end{figure}
+
